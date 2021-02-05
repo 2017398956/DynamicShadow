@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.wwq.pluginlibrary.DelegateProviderHolder;
 import com.wwq.pluginlibrary.GlobalContext;
@@ -21,6 +22,7 @@ public class MyApplication extends Application {
         GlobalContext.setApplication(this.getApplicationContext());
         DelegateProviderHolder.setDelegateProvider("test",new ShadowProvider());
         File file = new File(getFilesDir(), "resource.apk");
+        Log.i(Constant.TAG , "复制到 " + file.getAbsolutePath()) ;
         CopyFileFromAssets.copy( this, "resource.apk", file);
 
         try {

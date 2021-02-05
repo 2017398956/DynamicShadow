@@ -44,6 +44,12 @@ public class PPService extends Service {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(Constant.TAG, "service onStartCommand and startID = " + startId);
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onRebind(Intent intent) {
         super.onRebind(intent);
         Log.d(Constant.TAG, "service onRebind");

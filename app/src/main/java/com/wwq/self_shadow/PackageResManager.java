@@ -8,14 +8,15 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.util.Log;
 
-import com.wwq.pluginlibrary.ShadowContext;
-
 import java.io.File;
 
+/**
+ * 插件包管理器
+ */
 public class PackageResManager {
     public static ApplicationInfo applicationInfo;
 
-    public static Resources createResource(Context context,File file,String pluginKey) {
+    public static Resources createResource(Context context, File file, String pluginKey) {
         PackageInfo packageArchiveInfo = context.getPackageManager().getPackageArchiveInfo(file.getAbsolutePath(),
                 PackageManager.GET_ACTIVITIES
                         | PackageManager.GET_META_DATA

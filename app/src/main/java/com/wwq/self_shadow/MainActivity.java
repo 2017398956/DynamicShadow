@@ -14,13 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.wwq.pluginlibrary.GlobalContext;
 import com.wwq.self_shadow.pps.PpsController;
 
 import java.io.File;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     private ProgressBar tips;
@@ -124,11 +124,12 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tips.setVisibility(View.GONE);
                             try {
                                 ppsController.startPluginActivity();
                             } catch (Exception e) {
                                 e.printStackTrace();
+                            } finally {
+                                tips.setVisibility(View.GONE);
                             }
                         }
                     });
@@ -141,12 +142,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadResource(View view) {
+        // 加载插件 apk 是耗时操作，不要放在主线程操作
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-
-
                     File file = new File(getFilesDir(), "resource.apk");
                     CopyFileFromAssets.copy(MainActivity.this, "resource.apk", file);
                     final Resources resTest = PackageResManager.createResource(MainActivity.this, file, "resTest");
@@ -172,8 +172,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
-
     }
 
     @Override
