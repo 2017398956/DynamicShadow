@@ -24,6 +24,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+
+import com.wwq.pluginlibrary.shadow.activity.GeneratedPluginActivity;
+import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegate;
+
 import java.lang.CharSequence;
 import java.lang.ClassLoader;
 import java.lang.Object;

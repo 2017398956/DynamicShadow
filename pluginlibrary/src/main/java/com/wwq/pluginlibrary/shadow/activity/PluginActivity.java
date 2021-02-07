@@ -16,7 +16,7 @@
  *
  */
 
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.shadow.activity;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -25,10 +25,15 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.Window;
 
+import com.wwq.pluginlibrary.HostActivityDelegator;
+import com.wwq.pluginlibrary.shadow.ShadowApplication;
+import com.wwq.pluginlibrary.ShadowLayoutInflater;
+import com.wwq.pluginlibrary.host.PluginContainerActivity;
+
 
 public abstract class PluginActivity extends GeneratedPluginActivity {
 
-    static PluginActivity get(PluginContainerActivity pluginContainerActivity) {
+    public static PluginActivity get(PluginContainerActivity pluginContainerActivity) {
         Object o = pluginContainerActivity.getPluginActivity();
         if (o != null) {
             return (PluginActivity) o;
@@ -40,7 +45,7 @@ public abstract class PluginActivity extends GeneratedPluginActivity {
 
     HostActivityDelegator hostActivityDelegator;
 
-    ShadowApplication mPluginApplication;
+    public ShadowApplication mPluginApplication;
 
     ComponentName mCallingActivity;
 

@@ -1,7 +1,9 @@
-package com.wwq.self_shadow;
+package com.wwq.self_shadow.utils;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.wwq.self_shadow.Constant;
 
 import java.io.File;
 import java.io.FileOutputStream;

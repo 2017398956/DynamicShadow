@@ -1,4 +1,4 @@
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.shadow.interfaces;
 
 import android.app.ActionBar;
 import android.app.Activity;

@@ -1,4 +1,4 @@
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.shadow.interfaces;
 
 import android.app.Activity;
 import android.app.Dialog;

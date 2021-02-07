@@ -1,6 +1,5 @@
 package com.wwq.pluginlibrary;
 
-import android.app.Application;
 import android.content.Context;
 
 public class GlobalContext {

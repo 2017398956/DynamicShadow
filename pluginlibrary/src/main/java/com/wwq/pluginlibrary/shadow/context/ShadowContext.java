@@ -16,7 +16,7 @@
  *
  */
 
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.shadow.context;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -32,10 +32,16 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 
+import com.wwq.pluginlibrary.HostActivityDelegator;
+import com.wwq.pluginlibrary.MixResources;
+import com.wwq.pluginlibrary.ShadowLayoutInflater;
+import com.wwq.pluginlibrary.shadow.ShadowApplication;
+import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegator;
+
 public class ShadowContext extends SubDirContextThemeWrapper {
-    PluginComponentLauncher mPluginComponentLauncher;
-    ClassLoader mPluginClassLoader;
-    ShadowApplication mShadowApplication;
+    protected PluginComponentLauncher mPluginComponentLauncher;
+    protected ClassLoader mPluginClassLoader;
+    public ShadowApplication mShadowApplication;
     Resources mPluginResources;
     Resources mMixResources;
     LayoutInflater mLayoutInflater;

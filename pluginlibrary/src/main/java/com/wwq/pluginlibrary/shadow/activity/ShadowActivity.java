@@ -16,7 +16,7 @@
  *
  */
 
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.shadow.activity;
 
 import android.app.Application;
 import android.content.ComponentName;
@@ -29,10 +29,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.wwq.pluginlibrary.ShadowActivityLifecycleCallbacks;
+import com.wwq.pluginlibrary.shadow.ShadowApplication;
+import com.wwq.pluginlibrary.XmlPullParserUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public   class ShadowActivity extends PluginActivity {
+public class ShadowActivity extends PluginActivity {
 
     public void setContentView(int layoutResID) {
         Log.d("shadow_ca","layoutResID ="+layoutResID);

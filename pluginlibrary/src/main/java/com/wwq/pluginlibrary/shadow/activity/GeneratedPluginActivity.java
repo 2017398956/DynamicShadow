@@ -1,4 +1,4 @@
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.shadow.activity;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -54,6 +54,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toolbar;
+
+import com.wwq.pluginlibrary.shadow.ShadowApplication;
+import com.wwq.pluginlibrary.shadow.context.ShadowContext;
+import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegator;
+
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.lang.CharSequence;

@@ -16,20 +16,22 @@
  *
  */
 
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.host;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.TextView;
 
 
-import org.w3c.dom.Text;
+import com.wwq.pluginlibrary.DelegateProvider;
+import com.wwq.pluginlibrary.DelegateProviderHolder;
+import com.wwq.pluginlibrary.HostActivityDelegate;
+import com.wwq.pluginlibrary.HostActivityDelegator;
+import com.wwq.pluginlibrary.host.interfaces.HostActivity;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,9 +41,9 @@ import static com.wwq.pluginlibrary.DelegateProvider.PROCESS_ID_KEY;
 
 
 /**
- * 插件的容器Activity。PluginLoader将把插件的Activity放在其中。
- * PluginContainerActivity以委托模式将Activity的所有回调方法委托给DelegateProviderHolder提供的Delegate。
- *
+ * 插件的容器 Activity。PluginLoader将把插件的 Activity 放在其中。
+ * PluginContainerActivity 以委托模式将 Activity 的所有回调方法委托给
+ * DelegateProviderHolder提供的Delegate。
  * @author cubershi
  */
 public class PluginContainerActivity extends GeneratedPluginContainerActivity implements HostActivity, HostActivityDelegator {
@@ -51,6 +53,9 @@ public class PluginContainerActivity extends GeneratedPluginContainerActivity im
 
     private boolean isBeforeOnCreate = true;
 
+    /**
+     * 宿主 activity 在创建的时候，根据传递过来的
+     */
     public PluginContainerActivity() {
         HostActivityDelegate delegate;
         DelegateProvider delegateProvider = DelegateProviderHolder.getDelegateProvider(getDelegateProviderKey());

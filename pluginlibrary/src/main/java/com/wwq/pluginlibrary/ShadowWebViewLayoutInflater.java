@@ -22,6 +22,9 @@ import android.content.Context;
 import android.util.Pair;
 import android.view.LayoutInflater;
 
+import com.wwq.pluginlibrary.host.PluginContainerActivity;
+import com.wwq.pluginlibrary.shadow.activity.PluginActivity;
+
 /**
  * 1.模拟PhoneLayoutInflater的系统view构造过程
  * 2.将xml中的webview替换成shadowWebView

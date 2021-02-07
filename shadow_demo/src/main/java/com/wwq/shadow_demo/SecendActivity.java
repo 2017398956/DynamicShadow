@@ -2,7 +2,7 @@ package com.wwq.shadow_demo;
 
 import android.os.Bundle;
 
-import com.wwq.pluginlibrary.ShadowActivity;
+import com.wwq.pluginlibrary.shadow.activity.ShadowActivity;
 
 public class SecendActivity extends ShadowActivity {
 

@@ -18,6 +18,8 @@
 
 package com.wwq.pluginlibrary;
 
+import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegate;
+
 /**
  * HostActivity的被委托者接口
  * <p>

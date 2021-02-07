@@ -25,6 +25,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 
+import com.wwq.pluginlibrary.shadow.activity.PluginActivity;
+
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 

@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.wwq.pluginlibrary.GlobalContext;
 import com.wwq.self_shadow.pps.PpsController;
+import com.wwq.self_shadow.utils.CopyFileFromAssets;
 
 import java.io.File;
 

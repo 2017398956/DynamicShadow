@@ -1,12 +1,10 @@
 package com.wwq.self_shadow.plugin;
 
-import android.util.Log;
+import com.wwq.pluginlibrary.host.PluginContainerActivity;
 
-import com.wwq.pluginlibrary.PluginContainerActivity;
-import com.wwq.self_shadow.Constant;
-
-import static com.wwq.self_shadow.plugin.ShadowActivityDelegate.getCurrentProcessName;
-
+/**
+ * 用于代理插件中的 activity
+ */
 public class PluginDefaultActivity extends PluginContainerActivity {
     public PluginDefaultActivity() {
 

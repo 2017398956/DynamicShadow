@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.ContentProvider;
 import android.content.Intent;
 
+import com.wwq.pluginlibrary.shadow.ShadowApplication;
+
 public class ShadowAppComponentFactory {
 
     public ShadowApplication instantiateApplication(ClassLoader cl,

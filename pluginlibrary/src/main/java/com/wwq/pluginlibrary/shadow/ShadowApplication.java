@@ -16,7 +16,7 @@
  *
  */
 
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.shadow;
 
 import android.annotation.TargetApi;
 import android.app.Application;
@@ -27,6 +27,10 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Build;
+
+import com.wwq.pluginlibrary.ShadowActivityLifecycleCallbacks;
+import com.wwq.pluginlibrary.ShadowAppComponentFactory;
+import com.wwq.pluginlibrary.shadow.context.ShadowContext;
 
 import java.util.HashMap;
 import java.util.List;

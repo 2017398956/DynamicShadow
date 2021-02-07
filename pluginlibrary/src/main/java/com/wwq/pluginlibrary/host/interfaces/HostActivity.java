@@ -16,13 +16,13 @@
  *
  */
 
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.host.interfaces;
 
 import android.app.Activity;
 import android.view.Window;
 
 /**
- * 表示一个Activity是宿主程序中的Activity
+ * 表示一个Activity是宿主程序中的 Activity，即：是真正的 activity ，不是插件中假的 activity
  *
  * @author cubershi
  */

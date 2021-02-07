@@ -25,6 +25,9 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.IBinder;
 
+import com.wwq.pluginlibrary.shadow.ShadowApplication;
+import com.wwq.pluginlibrary.shadow.context.ShadowContext;
+
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 

@@ -1,19 +1,15 @@
 package com.wwq.shadow_demo;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.wwq.pluginlibrary.ITest;
-import com.wwq.pluginlibrary.ShadowActivity;
-
-import androidx.appcompat.app.AppCompatActivity;
+import com.wwq.pluginlibrary.shadow.activity.ShadowActivity;
 
 
 public class MainActivity extends ShadowActivity implements ITest {

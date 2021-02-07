@@ -22,6 +22,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.wwq.pluginlibrary.host.PluginContainerActivity;
+import com.wwq.pluginlibrary.shadow.activity.PluginActivity;
+import com.wwq.pluginlibrary.shadow.activity.ShadowActivity;
+
 
 public interface ShadowActivityLifecycleCallbacks {
 

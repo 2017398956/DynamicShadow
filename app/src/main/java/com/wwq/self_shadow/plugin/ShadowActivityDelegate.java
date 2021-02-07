@@ -1,39 +1,18 @@
 package com.wwq.self_shadow.plugin;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.Fragment;
-import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ActionMode;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.accessibility.AccessibilityEvent;
 
 import com.wwq.pluginlibrary.GeneratedShadowActivityDelegate;
 import com.wwq.pluginlibrary.HostActivityDelegate;
 import com.wwq.pluginlibrary.HostActivityDelegator;
 import com.wwq.pluginlibrary.MixResources;
-import com.wwq.pluginlibrary.ShadowActivity;
+import com.wwq.pluginlibrary.shadow.activity.ShadowActivity;
 import com.wwq.self_shadow.Constant;
-import com.wwq.self_shadow.MainActivity;
-import com.wwq.self_shadow.PPService;
 import com.wwq.self_shadow.PackageResManager;
 
 import java.io.FileInputStream;
