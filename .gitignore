@@ -12,3 +12,5 @@
 /captures
 .externalNativeBuild
 .cxx
+/app/src/main/assets/shadow_demo-debug.apk
+/app/src/main/assets/shadow_demo-debug-min.apk
