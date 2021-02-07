@@ -16,10 +16,7 @@
  *
  */
 
-package com.wwq.pluginlibrary;
-
-import com.wwq.pluginlibrary.host.interfaces.HostActivity;
-import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegator;
+package com.wwq.pluginlibrary.host.interfaces;
 
 /**
  * HostActivity作为委托者的接口。主要提供它的委托方法的super方法，

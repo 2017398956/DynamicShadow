@@ -25,7 +25,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.Window;
 
-import com.wwq.pluginlibrary.HostActivityDelegator;
+import com.wwq.pluginlibrary.host.interfaces.HostActivityDelegator;
 import com.wwq.pluginlibrary.shadow.ShadowApplication;
 import com.wwq.pluginlibrary.ShadowLayoutInflater;
 import com.wwq.pluginlibrary.host.PluginContainerActivity;

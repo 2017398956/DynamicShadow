@@ -6,7 +6,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.util.Pair;
 
-import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegator;
+import com.wwq.pluginlibrary.host.interfaces.GeneratedHostActivityDelegator;
 import com.wwq.pluginlibrary.shadow.context.ShadowContext;
 
 public class PluginComponentLauncherImpl implements ShadowContext.PluginComponentLauncher {

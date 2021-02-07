@@ -24,6 +24,8 @@ import com.wwq.self_shadow.utils.CopyFileFromAssets;
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
+    // 用于控制插件行为的控制器
+    private PpsController ppsController;
     private ProgressBar tips;
     private TextView tvtips;
     private LinearLayout parent;
@@ -85,16 +87,19 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
+                        // 将插件从 app 的 assets 目录复制到 app 的私有空间下
+                        // 也可以从网络获取等其它方式获取
                         Constant.apk = Constant.apk_max;
                         File file = new File(getFilesDir(), Constant.apk);
                         CopyFileFromAssets.copy(MainActivity.this, Constant.apk, file);
-                        ppsController.loadPlugin("max");
+                        // 加载插件
+                        ppsController.loadPlugin(Constant.PLUGIN_KEY_MAX);
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 tips.setVisibility(View.GONE);
                                 try {
-                                    ppsController.startPluginActivity();
+                                    ppsController.startPluginActivity("com.wwq.shadow_demo.MainActivity");
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -126,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                                ppsController.startPluginActivity();
+                                ppsController.startPluginActivity("com.wwq.shadow_demo.MainActivity");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
@@ -181,18 +186,17 @@ public class MainActivity extends AppCompatActivity {
         Log.d(Constant.TAG, "requestCode =" + requestCode + " resultCode= " + resultCode);
     }
 
-    PpsController ppsController;
-
     private void connectPPService() {
-        File file = new File(getFilesDir(), Constant.apk);
-        CopyFileFromAssets.copy(MainActivity.this, Constant.apk, file);
+        // 启动用于加载插件的服务
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName(getApplication().getApplicationContext(), "com.wwq.self_shadow.PPService"));
+        intent.setComponent(new ComponentName(getApplication().getApplicationContext(), PPService.class.getName()));
         startService(intent);
+        // 为宿主 context 绑定 加载插件服务
         GlobalContext.getAppContext().bindService(intent, new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                Log.d(Constant.TAG, "onServiceConnected ： " + name.getClassName());
+                Log.d(Constant.TAG, "onServiceConnected ： " + name.getClassName() + " binder : " + service);
+                // 宿主程序绑定插件服务的时候，为插件加载服务体哦那个一个控制器用于控制插件的行为
                 ppsController = PPService.wrapBinder(service);
 //                try {
 //                    ppsController.setUUID("uuuuuuuuuu");
@@ -227,6 +231,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }, BIND_AUTO_CREATE);
     }
-
 
 }

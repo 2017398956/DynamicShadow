@@ -30,6 +30,8 @@ import java.util.Map;
  * dynamic-pluginloader通过这个类实现将PluginLoader中的DelegateProvider实现注入到plugincontainer中。
  *
  * @author cubershi
+ *
+ * 用于存储不同插件的代理提供者 {@link DelegateProvider}
  */
 public class DelegateProviderHolder {
     public static final String DEFAULT_KEY = "DEFAULT_KEY";

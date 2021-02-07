@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import static android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE;
 
 /**
- *
+ * 插件加载服务进程中用于接收宿主进程发送来的信息，然后根据信息内容，控制插件行为
  */
 public class PPSBinder extends Binder {
 
@@ -28,7 +28,7 @@ public class PPSBinder extends Binder {
     static final int TRANSACTION_EXIT= 5;
     static final int TRANSACTION_START_ACTIVITY= 6;
     public static final int TRANSACTION_LOADPLUGIN = 7;
-
+    // 持有插件加载服务，以便于其它操作
     private PPService ppService;
 
     public PPSBinder(PPService ps) {
@@ -62,12 +62,13 @@ public class PPSBinder extends Binder {
                 reply.writeNoException();
                 break;
             case TRANSACTION_START_ACTIVITY:
-                ppService.starPluginActivity();
+                ppService.starPluginActivity(_arg0);
                 reply.writeNoException();
                 break;
             case TRANSACTION_LOADPLUGIN:
                 ppService.loadPlugin(_arg0);
                 reply.writeNoException();
+                reply.writeString("plugins added success!");
                 break;
         }
         return super.onTransact(code, data, reply, flags);

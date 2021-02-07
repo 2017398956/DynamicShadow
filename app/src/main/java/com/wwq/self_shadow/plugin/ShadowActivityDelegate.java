@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 
 import com.wwq.pluginlibrary.GeneratedShadowActivityDelegate;
-import com.wwq.pluginlibrary.HostActivityDelegate;
-import com.wwq.pluginlibrary.HostActivityDelegator;
+import com.wwq.pluginlibrary.shadow.interfaces.HostActivityDelegate;
+import com.wwq.pluginlibrary.host.interfaces.HostActivityDelegator;
 import com.wwq.pluginlibrary.MixResources;
 import com.wwq.pluginlibrary.shadow.activity.ShadowActivity;
 import com.wwq.self_shadow.Constant;
@@ -20,7 +20,10 @@ import java.io.IOException;
 
 import static com.wwq.self_shadow.PPService.baseDexClassLoader;
 
-
+/**
+ * 为启动插件提供相关资源，理论上每个插件都有一个实例，
+ * TODO 但是 mPluginResources 参数是全局的了，这里要注意一下（但是一般不会出现插件嵌套插件的情况，所以正常情况下也不会有问题）
+ */
 public class ShadowActivityDelegate extends GeneratedShadowActivityDelegate implements HostActivityDelegate {
     private HostActivityDelegator mHostActivityDelegator;
     public static Resources mPluginResources;

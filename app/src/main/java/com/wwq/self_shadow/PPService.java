@@ -25,10 +25,14 @@ import androidx.annotation.Nullable;
 
 import static com.wwq.self_shadow.plugin.ShadowActivityDelegate.getCurrentProcessName;
 
+/**
+ * 用于加载插件的服务
+ */
 public class PPService extends Service {
     private Handler mUiHandler = new Handler(Looper.getMainLooper());
 
     private static Object sSingleInstanceFlag = null;
+    // 用于接收宿主通过 IBinder 发送的信息
     private PPSBinder binder = new PPSBinder(this);
 
     @Override
@@ -74,6 +78,12 @@ public class PPService extends Service {
         return super.onUnbind(intent);
     }
 
+    /**
+     * 为插件加载服务提供一个可以操作插件行为的控制器
+     *
+     * @param ppsBinder 用于和这个服务通讯的 IBinder
+     * @return
+     */
     public static PpsController wrapBinder(IBinder ppsBinder) {
         return new PpsController(ppsBinder);
     }
@@ -85,13 +95,13 @@ public class PPService extends Service {
         } else {
             Log.d(Constant.TAG, "apkPath 不存在，" + file.getAbsolutePath());
         }
-        Log.e(Constant.TAG,"currentProcess service: "+getCurrentProcessName());
+        Log.e(Constant.TAG, "currentProcess service: " + getCurrentProcessName());
 
         Object o = baseDexClassLoader.loadClass("com.wwq.shadow_demo.TestService").newInstance();
         final ShadowService service = (ShadowService) o;
 //        if (isUiThread()) {
-            service.onCreate();
-            service.onStartCommand(new Intent(), 0, 10);
+        service.onCreate();
+        service.onStartCommand(new Intent(), 0, 10);
 //        } else {
 //            final CountDownLatch waitUiLock = new CountDownLatch(1);
 //            mUiHandler.post(new Runnable() {
@@ -109,13 +119,15 @@ public class PPService extends Service {
     private boolean isUiThread() {
         return Looper.myLooper() == Looper.getMainLooper();
     }
+
     private UserInfo userInfo;
+
     public void setUserName(String arg0) {
-        Log.e(Constant.TAG,"currentProcess service 1 : "+getCurrentProcessName());
+        Log.e(Constant.TAG, "currentProcess service 1 : " + getCurrentProcessName());
         userInfo = new UserInfo();
         userInfo.name = arg0;
         Constant.userInfo = userInfo;
-        Log.d(Constant.TAG,"setUserName = "+arg0);
+        Log.d(Constant.TAG, "setUserName = " + arg0);
     }
 
     public UserInfo getUserInfo() {
@@ -126,54 +138,76 @@ public class PPService extends Service {
         System.exit(0);
         try {
             wait();
-            Log.e(Constant.TAG,"exit...");
+            Log.e(Constant.TAG, "exit...");
         } catch (InterruptedException ignored) {
         }
     }
 
     public static PluginClassLoader baseDexClassLoader;
-    public void starPluginActivity() {
+
+    /**
+     * 由于插件中假的 activity 都在插件 apk 文件中，所以宿主 app 不知道类名，这里只能用字符串了
+     * @param shadowActivity
+     */
+    public void starPluginActivity(String shadowActivity) {
+        // 启动容器  activity
         Intent intent = new Intent(this, PluginDefaultActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Bundle bundle= new Bundle();
-        bundle.putString("className","com.wwq.shadow_demo.MainActivity");
+        Bundle bundle = new Bundle();
+        // 为容器 activity 添加要启动的插件中假的 activity
+        bundle.putString("className", shadowActivity);
         intent.putExtras(bundle);
         startActivity(intent);
-        Log.e(Constant.TAG,"currentProcess service 2 : "+getCurrentProcessName());
+        Log.e(Constant.TAG, "currentProcess service 2 : " + getCurrentProcessName());
     }
+
     public void starPluginActivityForResult() {
 //        Intent intent = new Intent(this, PluginDefaultActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        startActivity(intent);
 //        Log.e(Constant.TAG,"currentProcess service 2 : "+getCurrentProcessName());
     }
+
     Map<String, PluginClassLoader> classLoaderMap = new HashMap<>();
     Map<String, Resources> resourcesMap = new HashMap<>();
-    public void loadPlugin(String pluginKey){
-        if(pluginKey.equalsIgnoreCase("min")){
+
+    /**
+     * 加载插件并准备插件的相关资源
+     * TODO 注意：这里没有加载插件的 so 资源
+     * @param pluginKey
+     */
+    public void loadPlugin(String pluginKey) {
+        if (pluginKey.equalsIgnoreCase(Constant.PLUGIN_KEY_MIN)) {
             Constant.apk = Constant.apk_min;
-        }else{
+        } else {
             Constant.apk = Constant.apk_max;
         }
-        Log.e(Constant.TAG, "start load plugin : "+pluginKey);
-        if(classLoaderMap.containsKey(pluginKey)&&classLoaderMap.get(pluginKey)!=null){
-            baseDexClassLoader=classLoaderMap.get(pluginKey);
-            ShadowActivityDelegate.mPluginResources =resourcesMap.get(pluginKey);
-            Log.d(Constant.TAG, "baseDexClassLoader 1 ="+baseDexClassLoader);
+        Log.e(Constant.TAG, "start load plugin : " + pluginKey);
+        // 如果已经加载过这个插件，那么直接使用内存中的插件
+        if (classLoaderMap.containsKey(pluginKey) && classLoaderMap.get(pluginKey) != null) {
+            // 1.获取插件的 class 信息
+            baseDexClassLoader = classLoaderMap.get(pluginKey);
+            // 2.获取插件的 resources 资源
+            ShadowActivityDelegate.mPluginResources = resourcesMap.get(pluginKey);
+            Log.d(Constant.TAG, "baseDexClassLoader 1 =" + baseDexClassLoader);
             return;
         }
+        // 如果没加载过这个插件，则重新加载
+        // 1.找到该插件
         File file = new File(getFilesDir(), Constant.apk);
-        Resources resource = PackageResManager.createResource(this,file,pluginKey);
-        Log.d(Constant.TAG, "service onCreate,resource="+resource);
-        ShadowActivityDelegate.mPluginResources =resource;
-        resourcesMap.put(pluginKey,resource);
+        // 2.获取插件的 resources 资源
+        Resources resource = PackageResManager.createResource(this, file, pluginKey);
+        Log.d(Constant.TAG, "service onCreate,resource=" + resource);
+        ShadowActivityDelegate.mPluginResources = resource;
+        resourcesMap.put(pluginKey, resource);
+        // 3.获取插件的 class 信息
         ClassLoader classLoader = PPService.class.getClassLoader();
         File odexFile = new File(getCacheDir(), pluginKey);
-        if(!odexFile.exists()){
+        if (!odexFile.exists()) {
             odexFile.mkdirs();
         }
-        baseDexClassLoader = new PluginClassLoader(file.getAbsolutePath(), odexFile, null,classLoader);
-        Log.d(Constant.TAG, "baseDexClassLoader 2 ="+baseDexClassLoader);
-        classLoaderMap.put(pluginKey,baseDexClassLoader);
+        baseDexClassLoader = new PluginClassLoader(file.getAbsolutePath(), odexFile, null, classLoader);
+        Log.d(Constant.TAG, "baseDexClassLoader 2 =" + baseDexClassLoader);
+        classLoaderMap.put(pluginKey, baseDexClassLoader);
     }
 }

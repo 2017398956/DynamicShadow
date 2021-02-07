@@ -26,15 +26,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-
 import com.wwq.pluginlibrary.DelegateProvider;
 import com.wwq.pluginlibrary.DelegateProviderHolder;
-import com.wwq.pluginlibrary.HostActivityDelegate;
-import com.wwq.pluginlibrary.HostActivityDelegator;
 import com.wwq.pluginlibrary.host.interfaces.HostActivity;
-
-import java.io.FileInputStream;
-import java.io.IOException;
+import com.wwq.pluginlibrary.host.interfaces.HostActivityDelegator;
+import com.wwq.pluginlibrary.shadow.interfaces.HostActivityDelegate;
+import com.wwq.pluginlibrary.utils.ProcessUtil;
 
 import static com.wwq.pluginlibrary.DelegateProvider.LOADER_VERSION_KEY;
 import static com.wwq.pluginlibrary.DelegateProvider.PROCESS_ID_KEY;
@@ -44,7 +41,10 @@ import static com.wwq.pluginlibrary.DelegateProvider.PROCESS_ID_KEY;
  * 插件的容器 Activity。PluginLoader将把插件的 Activity 放在其中。
  * PluginContainerActivity 以委托模式将 Activity 的所有回调方法委托给
  * DelegateProviderHolder提供的Delegate。
+ *
  * @author cubershi
+ * <p>
+ * 覆写所有插件中 activity 用到的方法，并通过插件中 activity 的委托者实现和真正 activity 一样的生命周期
  */
 public class PluginContainerActivity extends GeneratedPluginContainerActivity implements HostActivity, HostActivityDelegator {
     private static final String TAG = "shadow_ca";
@@ -54,7 +54,7 @@ public class PluginContainerActivity extends GeneratedPluginContainerActivity im
     private boolean isBeforeOnCreate = true;
 
     /**
-     * 宿主 activity 在创建的时候，根据传递过来的
+     * 宿主 activity 在创建的时候，获取插件的代理提供者{@link DelegateProvider}
      */
     public PluginContainerActivity() {
         HostActivityDelegate delegate;
@@ -72,7 +72,7 @@ public class PluginContainerActivity extends GeneratedPluginContainerActivity im
 
     @Override
     public void setContentView(int layoutResID) {
-        Log.d("shadow_ca","- - - setContentView "+layoutResID);
+        Log.d("shadow_ca", "- - - setContentView " + layoutResID);
         super.setContentView(layoutResID);
     }
 
@@ -83,11 +83,16 @@ public class PluginContainerActivity extends GeneratedPluginContainerActivity im
 
     @Override
     public void setContentView(View view) {
-        Log.d("shadow_ca","- - - setContentView "+view);
+        Log.d("shadow_ca", "- - - setContentView " + view);
         super.setContentView(view);
 
     }
 
+    /**
+     * 为了适配不同的插件，这个方法通常要被覆写
+     *
+     * @return
+     */
     protected String getDelegateProviderKey() {
         return DelegateProviderHolder.DEFAULT_KEY;
     }
@@ -104,14 +109,14 @@ public class PluginContainerActivity extends GeneratedPluginContainerActivity im
     final protected void onCreate(Bundle savedInstanceState) {
         isBeforeOnCreate = false;
         mHostTheme = null;//释放资源
-        Log.e("shadow_ca","currentProcess service 3 : "+getCurrentProcessName());
+        Log.e("shadow_ca", "currentProcess service 3 : " + ProcessUtil.getCurrentProcessName());
         boolean illegalIntent = isIllegalIntent(savedInstanceState);
         if (illegalIntent) {
             super.hostActivityDelegate = null;
             hostActivityDelegate = null;
             Log.e(TAG, "illegalIntent savedInstanceState==" + savedInstanceState + " getIntent().getExtras()==" + getIntent().getExtras());
         }
-        Log.e(TAG, "onCreate: hostActivityDelegate= "+hostActivityDelegate);
+        Log.e(TAG, "onCreate: hostActivityDelegate= " + hostActivityDelegate);
         if (hostActivityDelegate != null) {
             hostActivityDelegate.onCreate(getIntent().getExtras());
         } else {
@@ -122,44 +127,17 @@ public class PluginContainerActivity extends GeneratedPluginContainerActivity im
             System.exit(0);
         }
     }
-    public static String getCurrentProcessName() {
-        FileInputStream in = null;
-        try {
-            String fn = "/proc/self/cmdline";
-            in = new FileInputStream(fn);
-            byte[] buffer = new byte[256];
-            int len = 0;
-            int b;
-            while ((b = in.read()) > 0 && len < buffer.length) {
-                buffer[len++] = (byte) b;
-            }
-            if (len > 0) {
-                String s = new String(buffer, 0, len, "UTF-8");
-                return s;
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            if (in != null){
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
+
     /**
      * IllegalIntent指的是这些情况下的启动：
-     * 1.插件版本变化之后，残留于系统中的PendingIntent或系统因回收内存杀死进程残留的任务栈而启动。
-     * 由于插件版本变化，PluginLoader逻辑可能不一致，Intent中的参数可能不能满足新代码的启动条件。
+     * 1.插件版本变化之后，残留于系统中的 PendingIntent 或系统因回收内存杀死进程残留的任务栈而启动。
+     * 由于插件版本变化，PluginLoader 逻辑可能不一致，Intent中的参数可能不能满足新代码的启动条件。
      * 2.外部的非法启动，无法确定一个插件的Activity。
      * <p>
      * <p>
-     * 3.不支持进程重启后莫名其妙的原因loader也加载了，但是可能要启动的plugin没有load，出现异常
+     * 3.不支持进程重启后莫名其妙的原因 loader 也加载了，但是可能要启动的 plugin 没有 load，出现异常
      *
-     * @param savedInstanceState onCreate时系统还回来的savedInstanceState
+     * @param savedInstanceState onCreate 时系统还回来的 savedInstanceState
      * @return <code>true</code>表示这次启动不是我们预料的，需要尽早finish并退出进程。
      */
     private boolean isIllegalIntent(Bundle savedInstanceState) {
@@ -208,7 +186,7 @@ public class PluginContainerActivity extends GeneratedPluginContainerActivity im
     }
 
     /**
-     * Theme一旦设置了就不能更换Theme所在的Resouces了，见{@link Resources.Theme#setTo(Resources.Theme)}
+     * Theme 一旦设置了就不能更换 Theme 所在的 Resouces 了，见 {@link Resources.Theme#setTo(Resources.Theme)}
      * 而Activity在OnCreate之前需要设置Theme和使用Theme。我们需要在Activity OnCreate之后才能注入插件资源。
      * 这就需要在Activity OnCreate之前不要调用Activity的setTheme方法，同时在getTheme时返回宿主的Theme资源。
      * 注：{@link Activity#setTheme(int)}会触发初始化Theme，因此不能调用。
@@ -221,7 +199,7 @@ public class PluginContainerActivity extends GeneratedPluginContainerActivity im
             if (mHostTheme == null) {
                 mHostTheme = super.getResources().newTheme();
             }
-            Log.d("shadow_ca","mHostTheme= "+mHostTheme);
+            Log.d("shadow_ca", "mHostTheme= " + mHostTheme);
             return mHostTheme;
         } else {
             return super.getTheme();

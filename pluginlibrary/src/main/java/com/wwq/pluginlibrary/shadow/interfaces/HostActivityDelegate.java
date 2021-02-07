@@ -16,8 +16,9 @@
  *
  */
 
-package com.wwq.pluginlibrary;
+package com.wwq.pluginlibrary.shadow.interfaces;
 
+import com.wwq.pluginlibrary.host.interfaces.HostActivityDelegator;
 import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegate;
 
 /**

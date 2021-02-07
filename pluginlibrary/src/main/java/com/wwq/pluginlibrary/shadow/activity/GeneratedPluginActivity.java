@@ -57,7 +57,7 @@ import android.widget.Toolbar;
 
 import com.wwq.pluginlibrary.shadow.ShadowApplication;
 import com.wwq.pluginlibrary.shadow.context.ShadowContext;
-import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegator;
+import com.wwq.pluginlibrary.host.interfaces.GeneratedHostActivityDelegator;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;

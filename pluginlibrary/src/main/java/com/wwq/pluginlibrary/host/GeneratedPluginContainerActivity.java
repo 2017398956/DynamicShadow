@@ -70,7 +70,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toolbar;
 
 import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegate;
-import com.wwq.pluginlibrary.shadow.interfaces.GeneratedHostActivityDelegator;
+import com.wwq.pluginlibrary.host.interfaces.GeneratedHostActivityDelegator;
 
 import java.io.File;
 import java.io.FileDescriptor;

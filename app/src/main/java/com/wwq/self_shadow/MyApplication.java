@@ -21,6 +21,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         GlobalContext.setApplication(this.getApplicationContext());
+        // 为宿主提供插件的信息，原则上加载多个插件应该有多个实例，但是往往同一时间只加载一个插件
+        // 可以修改插件提供者的属性信息来复用
         DelegateProviderHolder.setDelegateProvider("test", new ShadowProvider());
 
         /**
